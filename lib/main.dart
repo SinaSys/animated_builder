@@ -56,29 +56,35 @@ class _MyHomePageState extends State<MyHomePage>
       alignment: AlignmentDirectional.center,
       children: <Widget>[
         starsBackground,
-        AnimatedBuilder(
-          animation: _animation,
-          builder: (_, __) {
-            return ClipPath(
-              clipper: const BeamClipper(),
-              child: Container(
-                height: 1000,
-                decoration: BoxDecoration(
-                  gradient: RadialGradient(
-                    radius: 1.5,
-                    colors: [
-                      Colors.yellow,
-                      Colors.transparent,
-                    ],
-                    stops: [0, _animation.value],
-                  ),
-                ),
-              ),
-            );
-          },
-        ),
+        BeamTransition(animation: _animation),
         ufo,
       ],
+    );
+  }
+}
+
+class BeamTransition extends AnimatedWidget {
+  BeamTransition({Key key, Animation<double> animation})
+      : super(key: key, listenable: animation);
+
+  @override
+  Widget build(BuildContext context) {
+    final Animation<double> animation = listenable;
+    return ClipPath(
+      clipper: const BeamClipper(),
+      child: Container(
+        height: 1000,
+        decoration: BoxDecoration(
+          gradient: RadialGradient(
+            radius: 1.5,
+            colors: [
+              Colors.yellow,
+              Colors.transparent,
+            ],
+            stops: [0, animation.value],
+          ),
+        ),
+      ),
     );
   }
 }
